@@ -22,8 +22,8 @@ class Cristophides(object):
                 visited_vertices.add(i)
         path.append(path[0])
         # distance += self.edges[self.data * path[-1] + path[0]][2]
-        self.path=path
-        self.data=data
+        self.path = path
+        self.data = data
         print(path)
         print(distance)
         self.plot(name=name)
@@ -41,7 +41,7 @@ class Cristophides(object):
                     outer_array.append([o - 1, v - 1, G.edges[o, v]['weight']])
         self.edges = outer_array
         self.data = len(nodes)
-        self.graph=problem
+        self.graph = problem
 
     def mst(self):
         weighted_edges = sorted(self.edges, key=itemgetter(2))
@@ -116,25 +116,36 @@ class Cristophides(object):
         recursively_calculate_euler_tour(neighbours, MatchedMSTree[0][0])
         return tour
 
-    def plot(self, line_width=1, point_radius=math.sqrt(2.0), annotation_size=8, dpi=120, save=True, name=None):
-        x = [self.graph.display_data[i+1][0] for i in self.path-1]
+    def plot(
+            self,
+            line_width=1,
+            point_radius=math.sqrt(2.0),
+            annotation_size=8,
+            dpi=120,
+            save=True,
+            name=None):
+        x = [self.graph.node_coords[i + 1][0] for i in self.path]
         x.append(x[0])
-        y = [self.graph.display_data[i+1][1] for i in self.path-1]
+        y = [self.graph.node_coords[i + 1][1] for i in self.path]
         y.append(y[0])
         plt.plot(x, y, linewidth=line_width)
         plt.scatter(x, y, s=math.pi * (point_radius ** 2.0))
-        plt.title('Christofides '+self.data)
-        j=0
+        plt.title('Christofides ' + self.data)
+        j = 0
         for i in self.path:
-            plt.annotate(j, self.graph.display_data[i+1], size=annotation_size)
-            j+=1
+            plt.annotate(j,
+                         self.graph.node_coords[i + 1],
+                         size=annotation_size)
+            j += 1
         if save:
             if name is None:
-                name = '{0}.png'.format('Christofides '+self.data)
+                name = '{0}.png'.format('Christofides ' + self.data)
             plt.savefig(name, dpi=dpi)
         plt.show()
         plt.gcf().clear()
 
 
 sol = Cristophides()
-sol.run('ALL_tsp/ali535.tsp', 'ali535')
+path=input("Please enter the path to the dataset(tsp file)")
+imagename=input("Please enter the name by which you want to store the route image")
+sol.run(path,imagename)

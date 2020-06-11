@@ -17,7 +17,7 @@ class TSP_ACS(object):
             elite_weight=1,
             pheromone_deposit_weight=1.0,
             min_scaling_factor=0.001):
-        self.steps = steps
+        self.steps = int(steps)
         self.depot_assigned_to_ant = 0
         self.best_distance = 99999999999999
         self.best_route = None
@@ -44,8 +44,7 @@ class TSP_ACS(object):
                     inner_array.append([G.edges[o, v]['weight'], 1])
             outer_array.append(inner_array)
         self.edges = outer_array
-        self.cities = len(nodes)
-        self.ants=29
+        self.cities = self.ants = len(nodes)
         self.nodes=nodes
         self.graph = problem
 
@@ -157,15 +156,17 @@ class TSP_ACS(object):
     def run(self, mode):
         self.mode = mode
         print('Started : {0}'.format(self.mode))
-        if self.mode == 'ACS':
+        if self.mode == '1':
+            self.mode="ACS"
             self.acs()
-        elif self.mode == 'Elitist':
+        elif self.mode == '2':
+            self.mode="Elitist"
             self.elitist()
         else:
+            self.mode="Max-Min"
             self.max_min()
         print('Ended : {0}'.format(self.mode))
         print(self.best_route)
-        # print('Sequence : <- {0} ->'.format(' - '.join(str(self.labels[i]) for i in self.best_route)))
         print(
             'Total distance travelled to complete the tour : {0}\n'.format(
                 round(
@@ -173,17 +174,17 @@ class TSP_ACS(object):
                     2)))
         self.plot()
 
-    def plot(self, line_width=1, point_radius=math.sqrt(2.0), annotation_size=8, dpi=120, save=True, name=None):
-        x = [self.graph.display_data[i+1][0] for i in self.best_route]
+    def plot(self, line_width=1, point_radius=math.sqrt(0.1), annotation_size=1, dpi=120, save=True, name=None):
+        x = [self.graph.node_coords[i+1][0] for i in self.best_route]
         x.append(x[0])
-        y = [self.graph.display_data[i+1][1] for i in self.best_route]
+        y = [self.graph.node_coords[i+1][1] for i in self.best_route]
         y.append(y[0])
         plt.plot(x, y, linewidth=line_width)
         plt.scatter(x, y, s=math.pi * (point_radius ** 2.0))
         plt.title(self.mode)
         j=0
         for i in self.best_route:
-            plt.annotate(j, self.graph.display_data[i+1], size=annotation_size)
+            plt.annotate(j, self.graph.node_coords[i+1], size=annotation_size)
             j+=1
         if save:
             if name is None:
@@ -193,6 +194,15 @@ class TSP_ACS(object):
         plt.gcf().clear()
 
 
-sol = TSP_ACS(300)
-sol.load_file_and_create_graph('ALL_tsp/bayg29.tsp')
-sol.run('Max')
+
+path=input("Please enter the tsp file and the path to that file")
+print(path)
+print("1. ACS Without Optimization")
+print("2. ACS with Elitist Optimization")
+print("3.ACS with MinMax Optimization")
+choice=input("Your choice- 1/2/3?")
+steps=input("The number of steps you want to run this for")
+sol = TSP_ACS(steps)
+
+sol.load_file_and_create_graph(path)
+sol.run(choice)
