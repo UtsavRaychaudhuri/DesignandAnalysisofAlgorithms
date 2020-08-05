@@ -1,9 +1,9 @@
+from matplotlib import pyplot as plt
 from operator import itemgetter
 import math
 import tsplib95
 import matplotlib
 matplotlib.use('Agg')
-from matplotlib import pyplot as plt
 
 
 class Cristophides(object):
@@ -146,6 +146,7 @@ class Cristophides(object):
 
 
 sol = Cristophides()
-path=input("Please enter the path to the dataset(tsp file)")
-imagename=input("Please enter the name by which you want to store the route image")
-sol.run(path,imagename)
+path = input("Please enter the path to the dataset(tsp file)")
+imagename = input(
+    "Please enter the name by which you want to store the route image")
+sol.run(path, imagename)
