@@ -1,9 +1,9 @@
+from matplotlib import pyplot as plt
 from random import uniform
 import tsplib95
 import math
 import matplotlib
 matplotlib.use('Agg')
-from matplotlib import pyplot as plt
 
 
 class TSP_ACS(object):
@@ -45,7 +45,7 @@ class TSP_ACS(object):
             outer_array.append(inner_array)
         self.edges = outer_array
         self.cities = self.ants = len(nodes)
-        self.nodes=nodes
+        self.nodes = nodes
         self.graph = problem
 
     def ant_select_a_city_to_explore(self):
@@ -157,13 +157,13 @@ class TSP_ACS(object):
         self.mode = mode
         print('Started : {0}'.format(self.mode))
         if self.mode == '1':
-            self.mode="ACS"
+            self.mode = "ACS"
             self.acs()
         elif self.mode == '2':
-            self.mode="Elitist"
+            self.mode = "Elitist"
             self.elitist()
         else:
-            self.mode="Max-Min"
+            self.mode = "Max-Min"
             self.max_min()
         print('Ended : {0}'.format(self.mode))
         print(self.best_route)
@@ -182,10 +182,10 @@ class TSP_ACS(object):
         plt.plot(x, y, linewidth=line_width)
         plt.scatter(x, y, s=math.pi * (point_radius ** 2.0))
         plt.title(self.mode)
-        j=0
+        j = 0
         for i in self.best_route:
             plt.annotate(j, self.graph.node_coords[i+1], size=annotation_size)
-            j+=1
+            j += 1
         if save:
             if name is None:
                 name = '{0}.png'.format(self.mode)
@@ -194,14 +194,13 @@ class TSP_ACS(object):
         plt.gcf().clear()
 
 
-
-path=input("Please enter the tsp file and the path to that file")
+path = input("Please enter the tsp file and the path to that file")
 print(path)
 print("1. ACS Without Optimization")
 print("2. ACS with Elitist Optimization")
 print("3.ACS with MinMax Optimization")
-choice=input("Your choice- 1/2/3?")
-steps=input("The number of steps you want to run this for")
+choice = input("Your choice- 1/2/3?")
+steps = input("The number of steps you want to run this for")
 sol = TSP_ACS(steps)
 
 sol.load_file_and_create_graph(path)
