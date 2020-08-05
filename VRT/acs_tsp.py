@@ -1,4 +1,4 @@
-from random import randint, uniform
+from random import uniform
 import tsplib95
 import math
 import matplotlib
